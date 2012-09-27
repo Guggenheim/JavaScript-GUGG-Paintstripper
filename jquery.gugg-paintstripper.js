@@ -22,12 +22,14 @@
 
         if (options.hasOwnProperty('width')) {
           ps_w = options.width;
+          lmnt.width(ps_w);
         } else {
           ps_w = lmnt.width();
         }
 
         if (options.hasOwnProperty('height')) {
           ps_h = options.height;
+          lmnt.height(ps_h);
         } else {
           ps_h = lmnt.height();
         }
@@ -52,6 +54,15 @@
         lmnt.find('img').css(img_css);
         return this;
       },
+      
+      max_zoom: function () {
+        return 1 / ps_ratio;
+      },
+
+      ratio: function () {
+        return ps_ratio;
+      },
+
       destroy : function () {
         //destroy
       }
