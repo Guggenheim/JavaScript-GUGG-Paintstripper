@@ -20,6 +20,8 @@
             left: 0
           };
 
+        lmnt.save_style();
+
         if (options.hasOwnProperty('width')) {
           ps_w = options.width;
           lmnt.width(ps_w);
@@ -51,10 +53,24 @@
           img_css.top = (ps_h - img_css.height) / 2;
         }
 
-        lmnt.find('img').css(img_css);
+        lmnt.find('img').save_style().css(img_css);
+        // lmnt.find('img').each(function () {
+        //   // Save original style for destruction
+        //   if (typeof $(this).attr('style') !== 'undefined') {
+        //     $(this).data('orig-style', $(this).attr('style'));          
+        //   } else {
+        //     $(this).data('orig-style', null);
+        //   }
+
+        //   // Set required style
+        //   $(this).css(img_css);
+        // });
+
+        console.log(base_img.data('orig-style'));
+
         return this;
       },
-      
+
       max_zoom: function () {
         return 1 / ps_ratio;
       },
@@ -64,7 +80,17 @@
       },
 
       destroy : function () {
-        //destroy
+        var lmnt = $(this);
+
+        // return elements to original style
+        lmnt.find('img').each(function () {
+            $(this).attr('style', $(this).data('orig-style'));
+            $(this).removeData('orig-style');        
+        });
+
+        lmnt.attr('style', $(this).data('orig-style'));
+        lmnt.removeData('orig-style')  ;        
+        return this;
       }
     };
 
@@ -79,5 +105,15 @@
     }
 
     $.error('Method ' +  method + ' does not exist');
+  };
+
+  $.fn.save_style = function () {
+    return this.each(function() {
+      if (typeof $(this).attr('style') !== 'undefined') {
+        $(this).data('orig-style', $(this).attr('style'));          
+      } else {
+        $(this).data('orig-style', null);
+      }
+    });
   };
 }(jQuery));
