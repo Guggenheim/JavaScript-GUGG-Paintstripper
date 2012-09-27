@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Betacode Coversion Tests</title>
+
+    <link rel="stylesheet" href="qunit.css" />
+    <script src="qunit.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script> 
+    <script src="../jquery.gugg-paintstripper.js"></script>
+    <script>
+        test("Simple portrait init", function () {
+            var ps = $('#simple-portrait'),
+                ps_obj = ps.paintstripper();
+            equal(ps_obj.height(), 200);
+            equal(ps_obj.width(), 200);
+            equal(ps.find('img').first().height(), 200);
+            notEqual(ps.find('img').first().width(), 200);
+        });
+
+        test("Simple landscape init", function () {
+            var ps = $('#simple-landscape'),
+                ps_obj = ps.paintstripper();
+            equal(ps_obj.height(), 200);
+            equal(ps_obj.width(), 200);
+            equal(ps.find('img').first().width(), 200);
+            notEqual(ps.find('img').first().height(), 200);
+        });
+    </script>
+</head>
+<body>
+    <div id="qunit"></div>
+    <div id="qunit-fixture">
+        <div id="simple-portrait" style="height: 200px; width: 200px">
+            <img src="img/green-p.png" width="400" height="600" />
+            <img src="img/blue-p.png" width="400" height="600" />
+            <img src="img/red-p.png" width="400" height="600" />
+        </div>
+
+        <div id="simple-landscape" style="height: 200px; width: 200px">
+            <img src="img/green-l.png" width="600" height="400" />
+            <img src="img/blue-l.png" width="600" height="400" />
+            <img src="img/red-l.png" width="600" height="400" />
+        </div>
+    </div>
+</body>
+</html>
