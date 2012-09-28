@@ -58,8 +58,9 @@
         });
 
         // NB: For all tests where the rotation value has to be reset
-        // back to less than 360 or more than 0 degrees, it takes an extra 5
-        // milleseconds for rotate to run the callback that handles that.
+        // back to less than 360 or more than 0 degrees, it takes at least an 
+        // extra 5 milleseconds for rotate to run the callback that handles 
+        // that.
         asyncTest("Rotate should reset after > 360 degrees", function() {
             var ps = $('#simple-portrait'),
                 ps_obj = ps.paintstripper();
@@ -68,7 +69,7 @@
             setTimeout(function() {
                 equal(ps.paintstripper('rotate'), 90);
                 start();
-            }, 1005);
+            }, 1050);
         });
 
         asyncTest("Rotate with negative number", function() {
@@ -79,7 +80,7 @@
             setTimeout(function() {
                 equal(ps.paintstripper('rotate'), 270);
                 start();
-            }, 1005);
+            }, 1050);
         });
 
         asyncTest("Rotate with negative string", function() {
@@ -90,7 +91,7 @@
             setTimeout(function() {
                 equal(ps.paintstripper('rotate'), 270);
                 start();
-            }, 1005);
+            }, 1050);
         });
 
         asyncTest("Rotate with negative relative value", function() {
@@ -101,7 +102,7 @@
             setTimeout(function() {
                 equal(ps.paintstripper('rotate'), 270);
                 start();
-            }, 1005);
+            }, 1050);
         });
 
         asyncTest("Rotate more than twice around the circle", function() {
@@ -112,7 +113,7 @@
             setTimeout(function() {
                 equal(ps.paintstripper('rotate'), 90);
                 start();
-            }, 1005);
+            }, 1050);
         });
 
         asyncTest("Counter-rotate more than twice around the circle", function() {
@@ -123,7 +124,7 @@
             setTimeout(function() {
                 equal(ps.paintstripper('rotate'), 270);
                 start();
-            }, 1005);
+            }, 1050);
         });
 
         test("Reveal", function () {
