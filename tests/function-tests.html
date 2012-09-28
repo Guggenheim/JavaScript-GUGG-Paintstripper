@@ -2,11 +2,12 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <title>Betacode Coversion Tests</title>
+    <title>Painstripper function Tests</title>
 
     <link rel="stylesheet" href="qunit.css" />
     <script src="qunit.js"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script> 
+    <script src="https://raw.github.com/rstacruz/jquery.transit/v0.1.3/jquery.transit.js"></script>
     <script src="../jquery.gugg-paintstripper.js"></script>
     <script>
         test("Ratio", function () {
@@ -20,6 +21,87 @@
                 ps_obj = ps.paintstripper();
             equal(ps.paintstripper('max_zoom'), 3);
         });
+
+        asyncTest("Rotate with number", function() {
+            var ps = $('#simple-portrait'),
+                ps_obj = ps.paintstripper();
+
+            ps.paintstripper('rotate', 90);
+            setTimeout(function() {
+                equal(ps.find('.ps-axle').first().css('rotate'), "90deg");
+                start();
+            }, 1000);
+        });
+
+        asyncTest("Rotate with string", function() {
+            var ps = $('#simple-portrait'),
+                ps_obj = ps.paintstripper();
+
+            ps.paintstripper('rotate', '90deg');
+            setTimeout(function() {
+                equal(ps.find('.ps-axle').first().css('rotate'), "90deg");
+                start();
+            }, 1000);
+        });
+
+        asyncTest("Rotate with relative value", function() {
+            var ps = $('#simple-portrait'),
+                ps_obj = ps.paintstripper();
+
+            ps.paintstripper('rotate', '+=90');
+            setTimeout(function() {
+                equal(ps.find('.ps-axle').first().css('rotate'), "90deg");
+                start();
+            }, 1000);
+        });
+
+        // NB: For all tests where the rotation value has to be reset
+        // back to less than 360 or more than 0 degrees, it takes an extra 5
+        // milleseconds for rotate to run the callback that handles that.
+        asyncTest("Rotate should reset after > 360 degrees", function() {
+            var ps = $('#simple-portrait'),
+                ps_obj = ps.paintstripper();
+
+            ps.paintstripper('rotate', 450);
+            setTimeout(function() {
+                equal(ps.find('.ps-axle').first().css('rotate'), "90deg");
+                start();
+            }, 1005);
+        });
+
+        asyncTest("Rotate with negative number", function() {
+            var ps = $('#simple-portrait'),
+                ps_obj = ps.paintstripper();
+
+            ps.paintstripper('rotate', -90);
+            setTimeout(function() {
+                equal(ps.find('.ps-axle').first().css('rotate'), "270deg");
+                start();
+            }, 1005);
+        });
+
+        asyncTest("Rotate with negative string", function() {
+            var ps = $('#simple-portrait'),
+                ps_obj = ps.paintstripper();
+
+            ps.paintstripper('rotate', '-90deg');
+            setTimeout(function() {
+                equal(ps.find('.ps-axle').first().css('rotate'), "270deg");
+                start();
+            }, 1005);
+        });
+
+        asyncTest("Rotate with negative relative value", function() {
+            var ps = $('#simple-portrait'),
+                ps_obj = ps.paintstripper();
+
+            ps.paintstripper('rotate', '-=90');
+            setTimeout(function() {
+                equal(ps.find('.ps-axle').first().css('rotate'), "270deg");
+                start();
+            }, 1005);
+        });
+
 
     </script>
 </head>
