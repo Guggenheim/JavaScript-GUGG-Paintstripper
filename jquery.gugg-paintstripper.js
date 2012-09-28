@@ -94,17 +94,26 @@
         });
       },
 
-      rotate: function (deg) {
-        return $(this).find('.ps-axle').each(function () {
-          $(this).transition({ rotate: deg }, 1000, function () {
-            // Check to see if we've gone all the way around in either 
-            // direction
-            var theta = parseInt($(this).css('rotate'), 10);
-            if (theta >= 360) {
-              $(this).css({ rotate: theta - 360 });
-            } else if (theta < 0) {
-              $(this).css({ rotate: theta + 360 });
-            }
+      rotate: function (deg, duration, easing, callback) {
+        var axles = $(this).find('.ps-axle');
+        if (deg === undefined) {
+          return parseInt(axles.first().css('rotate'), 10);
+        }
+        
+        return axles.each(function () {
+          $(this).transition({ rotate: deg }, duration, easing, 
+            function (callback) {
+              // Check to see if we've gone all the way around in either 
+              // direction
+              var theta = parseInt($(this).css('rotate'), 10);
+              if (theta >= 360) {
+                $(this).css({ rotate: theta - 360 });
+              } else if (theta < 0) {
+                $(this).css({ rotate: theta + 360 });
+              }
+              if (callback !== undefined) {
+                callback();
+              }
           });
         });
       },
