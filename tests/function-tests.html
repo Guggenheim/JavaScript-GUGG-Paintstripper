@@ -125,6 +125,72 @@
                 start();
             }, 1005);
         });
+
+        test("Reveal", function () {
+            var ps = $('#simple-portrait'),
+                ps_obj = ps.paintstripper(),
+                w = ps.width();
+
+            ps.paintstripper('reveal', 100, 0);
+            equal(ps.find('.ps-shade').width(), 100);
+            equal(ps.paintstripper('reveal'), 100);
+
+        });
+
+        test("Reveal with percentage", function () {
+            var ps = $('#simple-portrait'),
+                ps_obj = ps.paintstripper(),
+                w = ps.width();
+
+            ps.paintstripper('reveal', "25%", 0);
+            equal(ps.find('.ps-shade').width(), 50);
+            equal(ps.paintstripper('reveal'), 50);
+
+        });
+
+        test("Reveal should not be less than 0", function () {
+            var ps = $('#simple-portrait'),
+                ps_obj = ps.paintstripper(),
+                w = ps.width();
+
+            ps.paintstripper('reveal', "-=100", 0);
+            equal(ps.find('.ps-shade').width(), 0);
+            equal(ps.paintstripper('reveal'), 0);
+        });
+
+        test("Reveal should be greater than its parent", function () {
+            var ps = $('#simple-portrait'),
+                ps_obj = ps.paintstripper(),
+                w = ps.width();
+
+            ps.paintstripper('reveal', 2000, 0);
+            equal(ps.find('.ps-shade').width(), ps.width());
+            equal(ps.paintstripper('reveal'), ps.width());
+        });
+
+        test("Reveal should not get less than 0", function () {
+            var ps = $('#simple-portrait'),
+                ps_obj = ps.paintstripper(),
+                w = ps.width();
+
+            ps.paintstripper('reveal', "5%", 0);
+            ps.paintstripper('reveal', "-=300", 0);
+            equal(ps.find('.ps-shade').width(), 0);
+            equal(ps.paintstripper('reveal'), 0);
+        });
+
+        test("Reveal should get greater than its parent", function () {
+            var ps = $('#simple-portrait'),
+                ps_obj = ps.paintstripper(),
+                w = ps.width();
+
+            ps.paintstripper('reveal', "95%", 0);
+            ps.paintstripper('reveal', "+=2000", 0);
+            equal(ps.find('.ps-shade').width(), ps.width());
+            equal(ps.paintstripper('reveal'), ps.width());
+        });
+
+
     </script>
 </head>
 <body>

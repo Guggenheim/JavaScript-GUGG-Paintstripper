@@ -7,6 +7,7 @@
     ps_ratio,
     ps_real_w,
     ps_real_h,
+    ps_shade = $('<div/>').addClass('ps-shade'),
     methods = {
       init : function (options) {
         options = $.extend({}, options);
@@ -14,7 +15,7 @@
           var lmnt = $(this),
             base_img = lmnt.find('img').first(),
             base = $('<div/>').addClass('ps-base'),
-            stripper = $('<div/>').addClass('ps-stripper'),
+            stripper = ps_shade,
             img_css = {
               width: 'auto',
               height: 'auto',
@@ -116,6 +117,39 @@
               }
             });
         });
+      },
+
+      reveal: function (amount, duration, easing, callback) {
+        var frame_w = $(this).width(),
+          m;
+
+        if (amount === undefined) {
+          return ps_shade.width();
+        }
+
+        if ((typeof amount === 'string') &&
+            ((m = amount.match(/^(\d+)\%/)) !== null)) {
+          amount = frame_w * (m[1] / 100);
+        } else if (typeof amount === 'number') {
+          if (amount < 0) {
+            amount = 0;
+          } else if (amount > frame_w) {
+            amount = frame_w;
+          }
+        }
+
+        return ps_shade.animate({width: amount}, duration, easing,
+          function () {
+            if (ps_shade.width() < 0) {
+              ps_shade.width(0);
+            } else if (ps_shade.width() > frame_w) {
+              ps_shade.width(frame_w);
+            }
+
+            if (callback !== undefined) {
+              callback();
+            }
+          });
       },
 
       max_zoom: function () {
