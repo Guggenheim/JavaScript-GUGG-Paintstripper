@@ -8,6 +8,8 @@
     ps_real_w,
     ps_real_h,
     ps_shade = $('<div/>').addClass('ps-shade'),
+    ps_handle = $('<div/>').addClass('handle'),
+    has_draggable = $.fn.draggable !== undefined,
     methods = {
       init : function (options) {
         options = $.extend({}, options);
@@ -91,6 +93,7 @@
             })
           );
 
+          lmnt.init_draggable();
 
         });
       },
@@ -140,10 +143,16 @@
 
         return ps_shade.animate({width: amount}, duration, easing,
           function () {
-            if (ps_shade.width() < 0) {
-              ps_shade.width(0);
-            } else if (ps_shade.width() > frame_w) {
-              ps_shade.width(frame_w);
+            var current = ps_shade.width();
+            if (current < 0) {
+              current = 0;
+            } else if (current > frame_w) {
+              current = frame_w;
+            }
+
+            ps_shade.width(current);
+            if (has_draggable) {
+              ps_handle.css({left: current - (ps_handle.width()/2)});
             }
 
             if (callback !== undefined) {
@@ -197,4 +206,31 @@
       }
     });
   };
+
+  $.fn.init_draggable = function () {
+    if (! has_draggable) {
+      return
+    }
+
+    var x1 = this.offset().left,
+      y1 = this.offset().top,
+      x2 = x1 + this.width(),
+      y2 = y1 + this.height();
+
+      console.log('x2: ' + x2);
+      console.log(ps_handle.width());
+    ps_handle.draggable({
+        axis: 'x',
+        containment: [x1-7, y1, 888.5-7, y2], //'parent',
+        drag: function (e, ui) {
+            var left_offset = ui.position.left,
+                handle_offset = ui.helper.outerWidth()/2,
+                new_offset = left_offset + handle_offset;
+            ps_shade.width(new_offset);
+        }
+    });
+
+    return this.append(ps_handle);
+  }
+
 }(jQuery));
