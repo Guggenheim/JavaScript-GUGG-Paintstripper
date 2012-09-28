@@ -99,7 +99,7 @@
         if (deg === undefined) {
           return parseInt(axles.first().css('rotate'), 10);
         }
-        
+
         return axles.each(function () {
           $(this).transition({ rotate: deg }, duration, easing, 
             function (callback) {
@@ -107,9 +107,9 @@
               // direction
               var theta = parseInt($(this).css('rotate'), 10);
               if (theta >= 360) {
-                $(this).css({ rotate: theta - 360 });
+                $(this).css({ rotate: theta % 360 });
               } else if (theta < 0) {
-                $(this).css({ rotate: theta + 360 });
+                $(this).css({ rotate: (theta % 360) + 360 });
               }
               if (callback !== undefined) {
                 callback();
