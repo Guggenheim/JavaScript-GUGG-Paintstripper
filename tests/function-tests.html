@@ -104,6 +104,16 @@
             }, 1005);
         });
 
+        asyncTest("Rotate more than twice around the circle", function() {
+            var ps = $('#simple-portrait'),
+                ps_obj = ps.paintstripper();
+
+            ps.paintstripper('rotate', 810);
+            setTimeout(function() {
+                equal(ps.paintstripper('rotate'), 90);
+                start();
+            }, 1005);
+        });
 
     </script>
 </head>
