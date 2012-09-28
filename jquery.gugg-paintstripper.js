@@ -101,7 +101,7 @@
         }
 
         return axles.each(function () {
-          $(this).transition({ rotate: deg }, duration, easing, 
+          $(this).transition({ rotate: deg }, duration, easing,
             function (callback) {
               // Check to see if we've gone all the way around in either 
               // direction
@@ -114,7 +114,7 @@
               if (callback !== undefined) {
                 callback();
               }
-          });
+            });
         });
       },
 
