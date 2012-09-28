@@ -45,6 +45,49 @@ Example:
 
 ### Methods
 
+#### ```rotate```
+
+    $('.selector').paintstripper('rotate', 
+        [degrees, [duration, [easing, [callback]]]]);
+
+Rotate the canvas (this does not rotate the windowshade). If used without any
+parameters it returns the current rotation in degrees.
+
+Parameters:
+
+* ```degrees```: The amount to rotate. This can be a number (```30```) a string
+(```"30"```, ```"30deg"```) or a string with a relative value (```"+=30"```, 
+```"-=30"```).
+* ```duration```: A string or number determining how long the animation will 
+run.
+* ```easing```: A string indicating which easing function to use for the 
+transition.
+* ```callback```: A function to call once the animation is complete. This method
+always calls its own callback to make sure the resulting number of degrees 
+is between 0 and 360. A callback passed via this parameter will be called 
+*after* that finishes.
+
+Does not work in IE8. Rotation works in IE9, but without animation.
+
+Examples:
+
+Rotate to 45 degrees:
+
+    $('.selector').paintstripper('rotate', 45);
+        
+Rotate to 45 degrees slowly:
+
+    $('.selector').paintstripper('rotate', 45, 5000);
+
+Rotate 90 degrees from current position:
+
+    $('.selector').paintstripper('rotate', '+=90');
+
+Get current rotation in degrees:
+
+    $('.selector').paintstripper('rotate');
+
+
 #### ```ratio```
 
     $('.selector').paintstripper('ratio');
@@ -78,7 +121,12 @@ the object was created with ```height``` and ```width``` options different from
 its natural dimensions (or dimensions set by other CSS), after destruction the
 element will return to those original dimensions.
 
+## Browser Compatability
 
+IE 8: No rotation.
+
+IE 9: Rotation transitions are not supported. Durations are ignored and all
+rotations occur instantly.
 
 
 
