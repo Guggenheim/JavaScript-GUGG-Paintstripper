@@ -8,6 +8,7 @@
     ps_real_w,
     ps_real_h,
     ps_shade = $('<div/>').addClass('ps-shade'),
+    ps_platen = $('<div/>').addClass('ps-platen'),
     ps_handle = $('<div/>').addClass('ps-handle'),
     has_draggable = $.fn.draggable !== undefined,
     methods = {
@@ -16,7 +17,7 @@
         return this.each(function () {
           var lmnt = $(this),
             base_img = lmnt.find('img').first(),
-            base = $('<div/>').addClass('ps-base'),
+            base = $('<div/>').addClass('ps-base ps-platen'),
             stripper = ps_shade,
             img_css = {
               width: 'auto',
@@ -80,12 +81,21 @@
           );
 
           lmnt.append(
-            stripper.append(
-              $('<div/>').addClass('ps-axle').css(img_css).append(
-                lmnt.children('img').detach()
-              )
+            ps_platen.append(
+              stripper.append(
+                $('<div/>').addClass('ps-axle').css(img_css).append(
+                  lmnt.children('img').detach()
+                )
+              ).css({
+                width: 0,
+                height: ps_h,
+                top: 0,
+                left: 0,
+                overflow: 'hidden',
+                position: 'absolute'
+              })
             ).css({
-              width: 0,
+              width: ps_w,
               height: ps_h,
               top: 0,
               left: 0,
@@ -97,6 +107,11 @@
           lmnt.init_draggable();
 
         });
+      },
+
+      activate: function (id) {
+        ps_shade.find('img#' + id).activate_layer();
+        return this;
       },
 
       rotate: function (deg, duration, easing, callback) {
@@ -153,7 +168,7 @@
 
             ps_shade.width(current);
             if (has_draggable) {
-              ps_handle.css({left: current - (ps_handle.outerWidth()/2)});
+              ps_handle.css({left: current - (ps_handle.outerWidth() / 2)});
             }
 
             if (callback !== undefined) {
@@ -166,15 +181,20 @@
         var lmnt = this,
           theta = lmnt.paintstripper('rotate');
 
+        // Close windowshade
         lmnt.paintstripper('reveal', 0);
+
+        //activate top layer
+        ps_shade.find('img').first().activate_layer();
+
+        // Rotate back to 12 o'clock in the shortest direction
         if (theta > 180) {
           lmnt.paintstripper('rotate', '+=' + (360 - theta));
         } else {
           lmnt.paintstripper('rotate', '-=' + theta);
         }
 
-
-        return
+        return this;
       },
 
       max_zoom: function () {
@@ -224,8 +244,8 @@
   };
 
   $.fn.init_draggable = function () {
-    if (! has_draggable) {
-      return
+    if (!has_draggable) {
+      return;
     }
 
     var x1 = this.offset().left,
@@ -235,22 +255,25 @@
       handle_w;
 
     this.append(ps_handle);
-    handle_w = ps_handle.outerWidth()/2;
-    ps_handle.css({left: 0 - handle_w});
-    console.log('x2: ' + x2);
-    console.log(ps_handle.width());
+    handle_w = ps_handle.outerWidth() / 2;
+    ps_handle.css({left: -handle_w});
     ps_handle.draggable({
-        axis: 'x',
-        containment: [x1-handle_w, y1, x2-handle_w, y2], //'parent',
-        drag: function (e, ui) {
-            var left_offset = ui.position.left,
-                handle_offset = ui.helper.outerWidth()/2,
-                new_offset = left_offset + handle_offset;
-            ps_shade.width(new_offset);
-        }
+      axis: 'x',
+      containment: [x1 - handle_w, y1, x2 - handle_w, y2],
+      drag: function (e, ui) {
+        var left_offset = ui.position.left,
+          handle_offset = ui.helper.outerWidth() / 2,
+          new_offset = left_offset + handle_offset;
+        ps_shade.width(new_offset);
+      }
     });
 
     return this;
-  }
+  };
+
+  $.fn.activate_layer = function () {
+    $(this).addClass('active').siblings().removeClass('active');
+    return $(this);
+  };
 
 }(jQuery));
