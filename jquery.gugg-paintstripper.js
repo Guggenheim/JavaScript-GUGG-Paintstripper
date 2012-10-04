@@ -7,6 +7,7 @@
     ps_ratio,
     ps_real_w,
     ps_real_h,
+    ps_base = $('<div/>').addClass('ps-base ps-platen'),
     ps_shade = $('<div/>').addClass('ps-shade'),
     ps_platen = $('<div/>').addClass('ps-platen'),
     ps_handle = $('<div/>').addClass('ps-handle'),
@@ -17,7 +18,7 @@
         return this.each(function () {
           var lmnt = $(this),
             base_img = lmnt.find('img').first(),
-            base = $('<div/>').addClass('ps-base ps-platen'),
+            base = ps_base,
             stripper = ps_shade,
             img_css = {
               width: 'auto',
@@ -81,13 +82,13 @@
           );
 
           lmnt.append(
-            ps_platen.append(
-              stripper.append(
+            stripper.append(
+              ps_platen.append(
                 $('<div/>').addClass('ps-axle').css(img_css).append(
                   lmnt.children('img').detach()
-                )
+                )                
               ).css({
-                width: 0,
+                width: ps_w,
                 height: ps_h,
                 top: 0,
                 left: 0,
@@ -95,7 +96,7 @@
                 position: 'absolute'
               })
             ).css({
-              width: ps_w,
+              width: 0,
               height: ps_h,
               top: 0,
               left: 0,
@@ -269,6 +270,14 @@
         ps_shade.width(new_offset);
       }
     });
+
+    $([ps_base, ps_platen]).each(function () {
+      $(this).draggable({
+        drag: function(event, ui) {
+            $('.ps-platen').css({top: ui.position.top, left: ui.position.left});
+        }
+      });
+    })
 
     return this;
   };
