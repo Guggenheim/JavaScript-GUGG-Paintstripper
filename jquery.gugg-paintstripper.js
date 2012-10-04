@@ -8,7 +8,7 @@
     ps_real_w,
     ps_real_h,
     ps_shade = $('<div/>').addClass('ps-shade'),
-    ps_handle = $('<div/>').addClass('handle'),
+    ps_handle = $('<div/>').addClass('ps-handle'),
     has_draggable = $.fn.draggable !== undefined,
     methods = {
       init : function (options) {
@@ -27,6 +27,7 @@
             };
 
           lmnt.save_style();
+          lmnt.addClass('ps-paintstripper');
 
           if (options.hasOwnProperty('width')) {
             ps_w = options.width;
@@ -152,13 +153,28 @@
 
             ps_shade.width(current);
             if (has_draggable) {
-              ps_handle.css({left: current - (ps_handle.width()/2)});
+              ps_handle.css({left: current - (ps_handle.outerWidth()/2)});
             }
 
             if (callback !== undefined) {
               callback();
             }
           });
+      },
+
+      reset: function () {
+        var lmnt = this,
+          theta = lmnt.paintstripper('rotate');
+
+        lmnt.paintstripper('reveal', 0);
+        if (theta > 180) {
+          lmnt.paintstripper('rotate', '+=' + (360 - theta));
+        } else {
+          lmnt.paintstripper('rotate', '-=' + theta);
+        }
+
+
+        return
       },
 
       max_zoom: function () {
@@ -215,13 +231,17 @@
     var x1 = this.offset().left,
       y1 = this.offset().top,
       x2 = x1 + this.width(),
-      y2 = y1 + this.height();
+      y2 = y1 + this.height(),
+      handle_w;
 
-      console.log('x2: ' + x2);
-      console.log(ps_handle.width());
+    this.append(ps_handle);
+    handle_w = ps_handle.outerWidth()/2;
+    ps_handle.css({left: 0 - handle_w});
+    console.log('x2: ' + x2);
+    console.log(ps_handle.width());
     ps_handle.draggable({
         axis: 'x',
-        containment: [x1-7, y1, 888.5-7, y2], //'parent',
+        containment: [x1-handle_w, y1, x2-handle_w, y2], //'parent',
         drag: function (e, ui) {
             var left_offset = ui.position.left,
                 handle_offset = ui.helper.outerWidth()/2,
@@ -230,7 +250,7 @@
         }
     });
 
-    return this.append(ps_handle);
+    return this;
   }
 
 }(jQuery));
