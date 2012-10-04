@@ -252,11 +252,13 @@
       y1 = this.offset().top,
       x2 = x1 + this.width(),
       y2 = y1 + this.height(),
-      handle_w;
+      handle_w,
+      handle_h;
 
     this.append(ps_handle);
     handle_w = ps_handle.outerWidth() / 2;
-    ps_handle.css({left: -handle_w});
+    handle_h = ps_handle.outerHeight() / 2;
+    ps_handle.css({left: -handle_w, top: (this.height() - handle_h) / 2});
     ps_handle.draggable({
       axis: 'x',
       containment: [x1 - handle_w, y1, x2 - handle_w, y2],
