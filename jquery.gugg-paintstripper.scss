@@ -10,6 +10,24 @@
     }
 }
 
+.ps-axle {
+    img {
+        position: absolute;
+        top: 0;
+        left: 0;
+    }
+}
+
+.ps-shade {
+    img {
+        display: none;
+
+        &.active {
+            display: block;
+        }
+    }
+}
+
 .ps-handle {
     width: 14px;
     height: 44px;
