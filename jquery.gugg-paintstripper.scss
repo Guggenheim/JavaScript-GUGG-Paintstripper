@@ -3,9 +3,11 @@
     position: relative;
     overflow: hidden;
 
-    &:hover {
-        .ps-handle {
-            visibility: visible;
+    &.has-active {
+        &:hover {
+            .ps-handle {
+                visibility: visible;
+            }
         }
     }
 }
