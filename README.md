@@ -128,5 +128,5 @@ IE 8: No rotation.
 IE 9: Rotation transitions are not supported. Durations are ignored and all
 rotations occur instantly.
 
-
+© 2012 The Solomon R. Guggenheim Foundation, New York.
 

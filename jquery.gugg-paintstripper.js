@@ -1,3 +1,37 @@
+/*
+ * Guggenheim Paintstripper: Interactive layered image viewer
+ * 
+ * Guggenheim Paintstripper is a jQuery plugin that you to take a "stack" of
+ * coordinated images meant to be different "layers" of a single object (such
+ * as a painting) and interactively manipulate them by panning, zooming, 
+ * rotating and, most-importantly, revealing the layers with a "windowshade"
+ * effect.
+ *
+ * Uses transit.js <https://github.com/rstacruz/jquery.transit> but currently
+ * requires a patched version: 
+ *   <https://github.com/luxanimals/jquery.transit>
+ *
+ * Requires jQuery UI 1.8 (a build including at draggable) if you want dragging
+ * effects
+ *
+ * © 2012 The Solomon R. Guggenheim Foundation, New York.
+ *
+ * This file is part of Guggenheim Paintstripper.
+ * 
+ * Guggenheim Paintstripper is free software: you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or (at your
+ * option) any later version.
+ * 
+ * Guggenheim Paintstripper is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
+ * more details.
+ * 
+ * You should have received a copy of the GNU General Public License along
+ * with Guggenheim Paintstripper.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 (function ($) {
   "use strict";
 
