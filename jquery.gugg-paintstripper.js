@@ -69,9 +69,10 @@
 
           lmnt.append(
             base.append(
-              $('<div/>').addClass('ps-axle').css(img_css).append(
-                base_img.detach()
-              )
+              $('<div/>')
+                .addClass('ps-axle')
+                .css(img_css)
+                .append(base_img.detach())
             ).css({
               width: ps_w,
               height: ps_h,
@@ -79,14 +80,16 @@
               left: 0,
               position: 'absolute'
             })
+
           );
 
           lmnt.append(
             stripper.append(
               ps_platen.append(
-                $('<div/>').addClass('ps-axle').css(img_css).append(
-                  lmnt.children('img').detach()
-                )                
+                $('<div/>')
+                  .addClass('ps-axle')
+                  .css(img_css)
+                  .append(lmnt.children('img').detach())
               ).css({
                 width: ps_w,
                 height: ps_h,
@@ -185,6 +188,9 @@
         // Close windowshade
         lmnt.paintstripper('reveal', 0);
 
+        // Return to home position
+        lmnt.find('.ps-platen').css({top: 0, left: 0});
+
         //activate top layer
         ps_shade.find('img').first().activate_layer();
 
@@ -273,11 +279,11 @@
 
     $([ps_base, ps_platen]).each(function () {
       $(this).draggable({
-        drag: function(event, ui) {
-            $('.ps-platen').css({top: ui.position.top, left: ui.position.left});
+        drag: function (event, ui) {
+          $('.ps-platen').css({top: ui.position.top, left: ui.position.left});
         }
       });
-    })
+    });
 
     return this;
   };
