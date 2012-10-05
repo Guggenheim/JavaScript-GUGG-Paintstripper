@@ -23,10 +23,10 @@
  * the Free Software Foundation, either version 3 of the License, or (at your
  * option) any later version.
  * 
- * Guggenheim Paintstripper is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
- * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
- * more details.
+ * Guggenheim Paintstripper is distributed in the hope that it will be useful, 
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of 
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General 
+ * Public License for more details.
  * 
  * You should have received a copy of the GNU General Public License along
  * with Guggenheim Paintstripper.  If not, see <http://www.gnu.org/licenses/>.
@@ -130,7 +130,6 @@
                 height: ps_h,
                 top: 0,
                 left: 0,
-                overflow: 'hidden',
                 position: 'absolute'
               })
             ).css({
@@ -248,13 +247,16 @@
         // Close windowshade
         lmnt.paintstripper('reveal', 0);
 
+        // Reset zoom
+        methods.zoom(100);
+
         // Return to home position
         $(ps_platens).each(function () {
           $(this).css({top: 0, left: 0});
         });
 
         // deactivate windowshade
-        methods['deactivate']();
+        methods.deactivate();
 
         // Rotate back to 12 o'clock in the shortest direction
         if (theta > 180) {
@@ -264,6 +266,16 @@
         }
 
         return this;
+      },
+
+      zoom: function (zoom) {
+        if (zoom === undefined) {
+          return $(".ps-platen img").first().scale();
+        }
+
+        $(".ps-platen img").each(function () {
+          $(this).transition({ scale: (zoom / 100)}, 0);
+        });
       },
 
       max_zoom: function () {
