@@ -115,9 +115,14 @@
       },
 
       activate: function (id) {
-        ps_shade.find('img#' + id).activate_layer();
+        ps_shade.addClass('has-active').find('img#' + id).activate_layer();
         return this;
       },
+
+      deactivate: function () {
+        ps_shade.removeClass('has-active').find('img').removeClass('active');
+        return this;
+      }
 
       move: function (coord) {
         if (coord === undefined) {
