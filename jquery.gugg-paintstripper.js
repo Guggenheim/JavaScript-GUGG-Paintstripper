@@ -10,6 +10,7 @@
     ps_base = $('<div/>').addClass('ps-base ps-platen'),
     ps_shade = $('<div/>').addClass('ps-shade'),
     ps_platen = $('<div/>').addClass('ps-platen'),
+    ps_platens = [ps_base, ps_platen],
     ps_handle = $('<div/>').addClass('ps-handle'),
     has_draggable = $.fn.draggable !== undefined,
     methods = {
@@ -118,6 +119,19 @@
         return this;
       },
 
+      move: function (coord) {
+        if (coord === undefined) {
+          return ps_base.position();
+        }
+
+        coord = $.extend(ps_base.position(), coord);
+        $.each(ps_platens, function () {
+          $(this).css(coord);
+        });
+
+        return this;
+      },
+
       rotate: function (deg, duration, easing, callback) {
         var axles = $(this).find('.ps-axle');
         if (deg === undefined) {
@@ -189,7 +203,9 @@
         lmnt.paintstripper('reveal', 0);
 
         // Return to home position
-        lmnt.find('.ps-platen').css({top: 0, left: 0});
+        $(ps_platens).each(function () {
+          $(this).css({top: 0, left: 0});
+        });
 
         //activate top layer
         ps_shade.find('img').first().activate_layer();
@@ -277,7 +293,7 @@
       }
     });
 
-    $([ps_base, ps_platen]).each(function () {
+    $(ps_platens).each(function () {
       $(this).draggable({
         drag: function (event, ui) {
           $('.ps-platen').css({top: ui.position.top, left: ui.position.left});
