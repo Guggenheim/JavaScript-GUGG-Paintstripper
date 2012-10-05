@@ -120,9 +120,12 @@
       },
 
       deactivate: function () {
-        ps_shade.removeClass('has-active').find('img').removeClass('active');
+        ps_shade
+          .css({width: 0})
+          .removeClass('has-active')
+          .find('img').removeClass('active');
         return this;
-      }
+      },
 
       move: function (coord) {
         if (coord === undefined) {
@@ -212,8 +215,8 @@
           $(this).css({top: 0, left: 0});
         });
 
-        //activate top layer
-        ps_shade.find('img').first().activate_layer();
+        // deactivate windowshade
+        methods['deactivate']();
 
         // Rotate back to 12 o'clock in the shortest direction
         if (theta > 180) {
