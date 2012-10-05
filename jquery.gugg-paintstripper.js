@@ -115,16 +115,16 @@
       },
 
       activate: function (id) {
-        ps_shade.addClass('has-active').find('img#' + id).activate_layer();
+        this.addClass('has-active');
+        ps_shade.find('img#' + id).activate_layer();
         return this;
       },
 
       deactivate: function () {
         ps_shade
           .css({width: 0})
-          .removeClass('has-active')
           .find('img').removeClass('active');
-        return this;
+        return $(this).removeClass('has-active');
       },
 
       move: function (coord) {
@@ -165,6 +165,10 @@
       },
 
       reveal: function (amount, duration, easing, callback) {
+        if (!this.hasClass('has-active')) {
+          return this;
+        }
+
         var frame_w = $(this).width(),
           m;
 
