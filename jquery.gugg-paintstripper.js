@@ -170,7 +170,8 @@
       self.ps_shade
         .css({width: 0})
         .find('img').removeClass('active');
-      return self.element.removeClass('has-active');
+      self.element.removeClass('has-active');
+      return this;
     },
 
     max_zoom: function () {
@@ -254,9 +255,10 @@
         }
       }
 
-      return self.ps_shade.animate({width: amount},
+      self.ps_shade.animate({width: amount},
         {duration: duration, easing: easing, step: self._sync_handle,
           complete: self._sync_handle});
+      return this;
     },
 
     rotate: function (deg, duration, easing, callback) {
@@ -270,7 +272,7 @@
       duration = (duration === undefined)
         ? self.options.rotate_duration : duration;
 
-      return axles.each(function () {
+      axles.each(function () {
         $(this).transition({ rotate: deg }, duration, easing,
           function (callback) {
             // Check to see if we've gone all the way around in either 
@@ -286,6 +288,8 @@
             }
           });
       });
+
+      return this;
     },
 
     zoom: function (zoom, duration) {
@@ -300,6 +304,8 @@
       $(".ps-platen img").each(function () {
         $(this).transition({ scale: (zoom / 100)}, duration);
       });
+
+      return this;
     },
 
 
