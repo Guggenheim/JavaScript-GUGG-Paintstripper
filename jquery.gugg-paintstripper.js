@@ -37,7 +37,10 @@
 
   $.widget('gugg.paintstripper', {
     options: {
-      x: 1
+      reveal_duration: 1000,
+      rotate_duration: 1000,
+      move_duration: 0,
+      zoom_duration: 0
     },
     ps_w: undefined,
     ps_h: undefined,
@@ -174,16 +177,19 @@
       return 1 / this.ps_ratio;
     },
 
-    move: function (coord) {
+    move: function (coord, duration) {
       var self = this;
 
       if (coord === undefined) {
         return self.ps_base.position();
       }
 
+      duration = (duration === undefined)
+        ? self.options.move_duration : duration;
+
       coord = $.extend(self.ps_base.position(), coord);
       $.each(self.ps_platens, function () {
-        this.css(coord);
+        this.animate(coord, duration);
       });
 
       return this;
@@ -234,6 +240,9 @@
         return self.ps_shade.width();
       }
 
+      duration = (duration === undefined)
+        ? duration = self.option.reveal_duration : duration;
+
       if ((typeof amount === 'string') &&
           ((m = amount.match(/^(\d+)\%/)) !== null)) {
         amount = frame_w * (m[1] / 100);
@@ -258,6 +267,9 @@
         return parseInt(axles.first().css('rotate'), 10);
       }
 
+      duration = (duration === undefined)
+        ? self.options.rotate_duration : duration;
+
       return axles.each(function () {
         $(this).transition({ rotate: deg }, duration, easing,
           function (callback) {
@@ -276,14 +288,17 @@
       });
     },
 
-    zoom: function (zoom) {
+    zoom: function (zoom, duration) {
       var self = this;
       if (zoom === undefined) {
         return self.ps_images.first().css('scale');
       }
 
+      duration = (duration === undefined)
+        ? self.options.zoom_duration : duration;
+
       $(".ps-platen img").each(function () {
-        $(this).transition({ scale: (zoom / 100)}, 0);
+        $(this).transition({ scale: (zoom / 100)}, duration);
       });
     },
 
