@@ -53,71 +53,86 @@
     ps_handle: $('<div/>').addClass('ps-handle'), //undefined,
     has_draggable: $.fn.draggable !== undefined,
 
-    _create: function () {
-      // options = $.extend({}, options);
-      // return this.each(function () {
-        var self = this,
-          lmnt = self.element,
-          ps_images = lmnt.find('img'),
-          base_img = $(ps_images[0]),
-          img_css = {
-            width: 'auto',
-            height: 'auto',
-            position: 'absolute',
-            top: 0,
-            left: 0
-          };
+    _create: function (options) {
+      var self = this,
+        lmnt = self.element,
+        ps_images = lmnt.find('img'),
+        base_img = $(ps_images[0]),
+        img_css = {
+          width: 'auto',
+          height: 'auto',
+          position: 'absolute',
+          top: 0,
+          left: 0
+        };
 
-        self.lmnt = lmnt;
-        self.ps_images = lmnt.find('img');
-        base_img = $(self.ps_images[0])
-        self.ps_base = $('<div/>').addClass('ps-base ps-platen');
+      self.lmnt = lmnt;
+      self.ps_images = lmnt.find('img');
+      base_img = $(self.ps_images[0]);
+      self.ps_base = $('<div/>').addClass('ps-base ps-platen');
 
-        self._save_style(lmnt);
-        lmnt.addClass('ps-paintstripper');
+      self._save_style(lmnt);
+      lmnt.addClass('ps-paintstripper');
 
-        if (self.options.hasOwnProperty('width')) {
-          ps_w = options.width;
-          lmnt.width(ps_w);
-        } else {
-          self.ps_w = lmnt.width();
-        }
+      if (self.options.hasOwnProperty('width')) {
+        self.ps_w = options.width;
+        lmnt.width(self.ps_w);
+      } else {
+        self.ps_w = lmnt.width();
+      }
 
-        if (self.options.hasOwnProperty('height')) {
-          ps_h = options.height;
-          lmnt.height(ps_h);
-        } else {
-          self.ps_h = lmnt.height();
-        }
+      if (self.options.hasOwnProperty('height')) {
+        self.ps_h = options.height;
+        lmnt.height(self.ps_h);
+      } else {
+        self.ps_h = lmnt.height();
+      }
 
-        self.ps_real_w = base_img.width();
-        self.ps_real_h = base_img.height();
+      self.ps_real_w = base_img.width();
+      self.ps_real_h = base_img.height();
 
-        if (self.ps_real_h >= self.ps_real_w) {
-          self.ps_orientation = 'portrait';
-          self.ps_ratio = self.ps_h / self.ps_real_h;
-          img_css.width = self.ps_real_w * self.ps_ratio;
-          img_css.height = self.ps_h;
-          img_css.left = (self.ps_w - img_css.width) / 2;
-        } else {
-          self.ps_orientation = 'landscape';
-          self.ps_ratio = self.ps_w / self.ps_real_w;
-          img_css.width = self.ps_w;
-          img_css.height = self.ps_real_h * self.ps_ratio;
-          img_css.top = (self.ps_h - img_css.height) / 2;
-        }
+      if (self.ps_real_h >= self.ps_real_w) {
+        self.ps_orientation = 'portrait';
+        self.ps_ratio = self.ps_h / self.ps_real_h;
+        img_css.width = self.ps_real_w * self.ps_ratio;
+        img_css.height = self.ps_h;
+        img_css.left = (self.ps_w - img_css.width) / 2;
+      } else {
+        self.ps_orientation = 'landscape';
+        self.ps_ratio = self.ps_w / self.ps_real_w;
+        img_css.width = self.ps_w;
+        img_css.height = self.ps_real_h * self.ps_ratio;
+        img_css.top = (self.ps_h - img_css.height) / 2;
+      }
 
-        self._save_style(lmnt.find('img')).css({
-          width: img_css.width,
-          height: img_css.height
-        });
+      self._save_style(lmnt.find('img')).css({
+        width: img_css.width,
+        height: img_css.height
+      });
 
-        lmnt.append(
-          self.ps_base.append(
+      lmnt.append(
+        self.ps_base.append(
+          $('<div/>')
+            .addClass('ps-axle')
+            .css(img_css)
+            .append(base_img.detach())
+        ).css({
+          width: self.ps_w,
+          height: self.ps_h,
+          top: 0,
+          left: 0,
+          position: 'absolute'
+        })
+
+      );
+
+      lmnt.append(
+        self.ps_shade.append(
+          self.ps_platen.append(
             $('<div/>')
               .addClass('ps-axle')
               .css(img_css)
-              .append(base_img.detach())
+              .append(lmnt.children('img').detach())
           ).css({
             width: self.ps_w,
             height: self.ps_h,
@@ -125,36 +140,18 @@
             left: 0,
             position: 'absolute'
           })
+        ).css({
+          width: 0,
+          height: self.ps_h,
+          top: 0,
+          left: 0,
+          overflow: 'hidden',
+          position: 'absolute'
+        })
+      );
 
-        );
-
-        lmnt.append(
-          self.ps_shade.append(
-            self.ps_platen.append(
-              $('<div/>')
-                .addClass('ps-axle')
-                .css(img_css)
-                .append(lmnt.children('img').detach())
-            ).css({
-              width: self.ps_w,
-              height: self.ps_h,
-              top: 0,
-              left: 0,
-              position: 'absolute'
-            })
-          ).css({
-            width: 0,
-            height: self.ps_h,
-            top: 0,
-            left: 0,
-            overflow: 'hidden',
-            position: 'absolute'
-          })
-        );
-
-        self.ps_platens = [self.ps_base, self.ps_platen];
-        self._init_draggable(lmnt);
-
+      self.ps_platens = [self.ps_base, self.ps_platen];
+      self._init_draggable(lmnt);
     },
 
     activate: function (id) {
@@ -223,7 +220,7 @@
       return this;
     },
 
-    reveal: function (amount, duration, easing, callback) {
+    reveal: function (amount, duration, easing) {
       var self = this,
         lmnt = self.element,
         frame_w = lmnt.width(),
@@ -248,15 +245,14 @@
         }
       }
 
-      return self.ps_shade.animate({width: amount}, 
-        {duration: duration, easing: easing, step: self._sync_handle, complete: self._sync_handle});
+      return self.ps_shade.animate({width: amount},
+        {duration: duration, easing: easing, step: self._sync_handle,
+          complete: self._sync_handle});
     },
 
     rotate: function (deg, duration, easing, callback) {
       var self = this,
         axles = self.element.find('.ps-axle');
-
-      console.log(deg);
 
       if (deg === undefined) {
         return parseInt(axles.first().css('rotate'), 10);
@@ -302,14 +298,13 @@
     },
 
     _init_draggable: function (lmnt) {
-      var self = this;
 
-      if (self.has_draggable === false) {
-        console.log('NO DRAG');
+      if (this.has_draggable === false) {
         return;
       }
 
-      var x1 = lmnt.offset().left,
+      var self = this,
+        x1 = lmnt.offset().left,
         y1 = lmnt.offset().top,
         x2 = x1 + lmnt.width(),
         y2 = y1 + lmnt.height(),
@@ -319,7 +314,10 @@
       lmnt.append(self.ps_handle);
       handle_w = self.ps_handle.outerWidth() / 2;
       handle_h = self.ps_handle.outerHeight() / 2;
-      self.ps_handle.css({left: -handle_w, top: (lmnt.height() - handle_h) / 2});
+      self.ps_handle.css({
+        left: -handle_w,
+        top: (lmnt.height() - handle_h) / 2
+      });
       self.ps_handle.draggable({
         axis: 'x',
         containment: [x1 - handle_w, y1, x2 - handle_w, y2],
@@ -331,9 +329,7 @@
         }
       });
 
-      console.log(self.ps_base);
       $.each([self.ps_base, self.ps_platen], function (i, e) {
-        console.log(e);
         $(this).draggable({
           drag: function (event, ui) {
             $('.ps-platen').css({top: ui.position.top, left: ui.position.left});
